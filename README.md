@@ -88,7 +88,7 @@ ASP.NET MVC веб-приложение, демонстрирующее прим
 
 ## 📌 3. Модель
 Используется:
-```python
+python
 NearestNeighbors(n_neighbors=5, metric='cosine')
 
 ---
@@ -116,12 +116,6 @@ NearestNeighbors(n_neighbors=5, metric='cosine')
   Использует `ILoginService`
 - `MovieMindServiceController` — uses `IMovieRecommendationService`  
   Использует `IMovieRecommendationService`
-
----
-
-## 🖼 UML Diagram / Диаграмма классов
-
-> *(Add UML diagram or screenshot here / Добавьте диаграмму классов или скриншот приложения)*
 
 ---
 

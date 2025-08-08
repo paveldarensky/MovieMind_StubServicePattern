@@ -1,0 +1,128 @@
+﻿@model ServiceStub.Models.RegisterModel
+@using ServiceStub.Models
+
+@{
+    ViewData["Title"] = "Register Page";
+}
+
+<div class="RegisterView_container">
+    @using (Html.BeginForm("Register", "Register", FormMethod.Post, new { @class = "register-form" }))
+    {
+        <h1>РЕГИСТРАЦИЯ</h1>
+        <div class="inputs-container">
+            <div class="input-container">
+                <p class="LogPassLabels">Придумайте логин</p>
+                <p>
+                    <input asp-for="Username" class="form-input" type="text" autocomplete="off" />
+                </p>
+            </div>
+            <div class="input-container">
+                <p class="LogPassLabels">Придумайте пароль</p>
+                <p>
+                    <input asp-for="Password" class="form-input" type="password" autocomplete="off" />
+                </p>
+            </div>
+            <div class="input-container">
+                <p class="LogPassLabels">Повторите пароль</p>
+                <p>
+                    <input asp-for="ConfirmPassword" class="form-input" type="password" autocomplete="off" />
+                </p>
+            </div>
+
+        </div>
+        <button type="submit" name="action" value="RegIn" class="form-submit" id="btn_finish">Создать аккаунт</button>
+        @if (ViewBag.Error != null)
+        {
+            <h2>@ViewBag.Error</h2>
+        }
+        <a id="btn_loginForm" href="@Url.Action("Login", "Login")"> <span>Войти</span> &rarr;</a>
+    }
+</div>
+
+
+<style>
+
+    .RegisterView_container {
+        width: 100%;
+        min-height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: black;
+    }
+
+    .register-form {
+        margin: 0 auto;
+        padding: 20px;
+        border: 2px solid black;
+        border-radius: 15px;
+        background-color: #f9f9f9;
+        min-width: 520px;
+        max-width: 600px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+        .register-form h1 {
+            text-align: center;
+        }
+
+    .inputs-container {
+        margin: 20px 0;
+        min-width: 100%;
+    }
+
+    .input-container:not(:last-child) {
+        margin-bottom: 20px;
+    }
+
+    h1 {
+        font-weight: 500;
+        font-size: 36px;
+    }
+
+    h2 {
+        color: red;
+        font-size: 24px;
+    }
+
+    .LogPassLabels {
+        font-size: 24px;
+    }
+
+    p {
+        margin: 0;
+    }
+
+    .form-input {
+        padding: 5px;
+        font-size: 28px;
+        min-width: 100%;
+        border-radius: 10px;
+        border: 1px solid gray;
+        font-family: 'Manrope', serif;
+    }
+
+    .form-submit {
+        font-size: 28px;
+        cursor: pointer;
+        width: 100%;
+        background-color: #4294FF;
+        padding: 5px;
+        border-radius: 10px;
+        border: 1px solid black;
+        margin-bottom: 20px;
+    }
+
+    #btn_loginForm {
+        font-size: 24px;
+        text-decoration: none;
+    }
+
+        #btn_loginForm span:hover {
+            text-decoration: underline;
+        }
+
+</style>
+

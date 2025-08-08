@@ -1,0 +1,119 @@
+﻿@model ServiceStub.Models.MovieInput
+@{
+    ViewBag.Title = "Movie Recommender";
+
+    // Полный список жанров
+    var allGenres = new List<string> {
+        "Drama", "Comedy", "Action", "Adventure", "Crime", "Animation", "Documentary", "Romance", "Thriller",
+        "Mystery", "Fantasy", "Horror", "Family", "Reality-TV", "History", "Biography", "Short", "Sci-Fi",
+        "Music", "Sport", "Game-Show", "Musical", "War", "Talk-Show", "Western", "News", "Film-Noir"
+    };
+
+    // Только 5 жанров для Stub-сервиса
+    var stubGenres = allGenres.Take(5).ToList();
+
+    bool isStub = ViewBag.UseStub == true;
+}
+
+<h2>Подбор фильма</h2>
+
+@Html.Raw(ViewBag.ServiceInfo)
+
+
+<div class="card shadow-sm mt-4 bg-dark text-white">
+    <div class="card-body">
+        <h4 class="card-title mb-3">Параметры фильтра</h4>
+
+        <form asp-action="Recommend" method="post">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            @if (!isStub)
+            {
+                <div class="mb-3">
+                    <label class="form-label">Год:</label>
+                    <input asp-for="Year" class="form-control" />
+                    <span asp-validation-for="Year" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Длительность (мин):</label>
+                    <input asp-for="Duration" class="form-control" />
+                    <span asp-validation-for="Duration" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Рейтинг (IMDb):</label>
+                    <input asp-for="Rating" class="form-control" />
+                    <span asp-validation-for="Rating" class="text-danger"></span>
+                </div>
+            }
+
+            <div class="mb-3">
+                <label class="form-label">Жанры:</label><br />
+                <div class="row">
+                    @{
+                        var genresToShow = isStub ? stubGenres : allGenres;
+                        int half = genresToShow.Count / 2;
+                    }
+                    <div class="col-md-6">
+                        @for (int i = 0; i <= half; i++)
+                        {
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="Genres" value="@genresToShow[i]" id="genre_@i" />
+                                <label class="form-check-label" for="genre_@i">@genresToShow[i]</label>
+                            </div>
+                        }
+                    </div>
+                    <div class="col-md-6">
+                        @for (int i = half + 1; i < genresToShow.Count; i++)
+                        {
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="Genres" value="@genresToShow[i]" id="genre_@i" />
+                                <label class="form-check-label" for="genre_@i">@genresToShow[i]</label>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <span asp-validation-for="Genres" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-success">🎯 Рекомендовать</button>
+        </form>
+    </div>
+</div>
+
+
+
+
+
+@if (ViewBag.Recommendations != null)
+{
+    <h3 class="mt-4 mb-3">🎬 Рекомендованные фильмы</h3>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @foreach (var film in ViewBag.Recommendations)
+        {
+            var similarity = Math.Round(100.0 / (1.0 + film.Distance), 2);
+            <div class="col">
+                <div class="card h-100 shadow-sm border-primary bg-dark text-white">
+                    <div class="card-body">
+                        <h5 class="card-title">@film.Title</h5>
+                        <p class="card-text">Сходство: <strong>@similarity%</strong></p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@if (ViewBag.ShowMore == true)
+{
+    <form asp-action="RecommendMore" method="post" class="mt-3">
+        <button type="submit" class="btn btn-outline-info">🔁 Ещё</button>
+    </form>
+}
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

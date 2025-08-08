@@ -1,0 +1,135 @@
+﻿@model ServiceStub.Models.LoginModel
+@using ServiceStub.Models
+
+@{
+    ViewData["Title"] = "Login Page";
+}
+
+<div class="LoginView_container">
+    @using (Html.BeginForm("Login", "Login", FormMethod.Post, new { @class = "login-form" }))
+    {
+        <h1>АВТОРИЗАЦИЯ</h1>
+
+        <p style="font-size: 18px; color: @(ViewBag.UseStub ? "orange" : "green")">
+            @Html.Raw(ViewBag.ServiceInfo)
+        </p>
+
+        <div class="inputs-container">
+            <div class="input-container">
+                <p class="LogPassLabels">Логин</p>
+                <p>
+                    <input asp-for="Username" class="form-input" type="text" autocomplete="off" />
+                </p>
+            </div>
+            <div class="input-container">
+                <p class="LogPassLabels">Пароль</p>
+                <p>
+                    <input asp-for="Password" class="form-input" type="password" autocomplete="off" />
+                </p>
+            </div>
+        </div>
+        <button type="submit" name="action" value="LogIn" class="form-submit" id="btn_finish">Войти</button>
+        @if (ViewBag.Error != null)
+        {
+            <h2>@ViewBag.Error</h2>
+        }
+        <a id="btn_registerForm" href="@Url.Action("Register", "Register")"
+           class="@(ViewBag.UseStub ? "disabled-link" : "")"
+           onclick="return @(ViewBag.UseStub ? "false" : "true");">
+            <span>Регистрация</span> &rarr;
+        </a>
+    }
+</div>
+
+
+<style>
+
+    .disabled-link {
+        pointer-events: none;
+        color: gray;
+        text-decoration: line-through;
+    }
+
+    .LoginView_container {
+        width: 100%;
+        min-height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: black;
+    }
+
+    .login-form {
+        margin: 0 auto;
+        padding: 20px;
+        border: 2px solid black;
+        border-radius: 15px;
+        background-color: #f9f9f9;
+        min-width: 520px;
+        max-width: 600px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+        .login-form h1 {
+            text-align: center;
+        }
+
+    .inputs-container {
+        margin: 20px 0;
+        min-width: 100%;
+    }
+
+    .input-container:first-child {
+        margin-bottom: 20px;
+    }
+
+    h1 {
+        font-weight: 500;
+        font-size: 36px;
+    }
+
+    h2 {
+        color: red;
+        font-size: 24px;
+    }
+
+    .LogPassLabels {
+        font-size: 24px;
+    }
+
+    p {
+        margin: 0;
+    }
+
+    .form-input {
+        padding: 5px;
+        font-size: 28px;
+        min-width: 100%;
+        border-radius: 10px;
+        border: 1px solid gray;
+        font-family: 'Manrope', serif;
+    }
+
+    .form-submit {
+        font-size: 28px;
+        cursor: pointer;
+        width: 100%;
+        background-color: #4294FF;
+        padding: 5px;
+        border-radius: 10px;
+        border: 1px solid black;
+        margin-bottom: 20px;
+    }
+
+    #btn_registerForm {
+        font-size: 24px;
+        text-decoration: none;
+    }
+
+        #btn_registerForm span:hover {
+            text-decoration: underline;
+        }
+
+</style>
